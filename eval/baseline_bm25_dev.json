@@ -1,0 +1,1573 @@
+{
+ "split": "dev",
+ "match": "anchor",
+ "ranking": {
+  "low_quality_weight": 1.0,
+  "table_degraded_weight": 1.0,
+  "credit_only_weight": 1.0,
+  "type_weights": {}
+ },
+ "fingerprint": {
+  "corpus": [
+   {
+    "source": "A-Student039s-Guide-to-Tropical-Marine-Biology-1576764955.pdf",
+    "sha256": "ed76d341fea9a46db914b668ad0abb5372c27eedf86a75eab25b2c60cd07401b",
+    "extractor_version": "3",
+    "manifest_schema": 2,
+    "chunks": 449
+   },
+   {
+    "source": "Biology and Ecology of Fishes (3rd Ed.) by James S. Diana & Tomas O. Höök.pdf",
+    "sha256": "fe8c3797a942b3f9156164275344e0f9453259ff46a2c65786d3e3346348ee54",
+    "extractor_version": "3",
+    "manifest_schema": 2,
+    "chunks": 1604
+   },
+   {
+    "source": "Introduction to Marine Biology (4th Ed.) by George Karleskint, Richard Turner, James W. Small.pdf",
+    "sha256": "1acc69e3cc4180744033e93b3d868dc1b30461935ea239d17f7aa78d4b1e028e",
+    "extractor_version": "3",
+    "manifest_schema": 2,
+    "chunks": 2265
+   },
+   {
+    "source": "Marine Biology 12e By Peter Castro, Michael Huber.pdf",
+    "sha256": "f24cde082efb105bcdb953ef7a9e4a7a7b8ceea7f3350ddc7ed6729bae232b79",
+    "extractor_version": "3",
+    "manifest_schema": 2,
+    "chunks": 2154
+   }
+  ],
+  "questions_sha256": "b49d233d219fa2628d4b595735e9535dbe248624998cf8031268886f83fe0822"
+ },
+ "metrics": {
+  "overall": {
+   "n": 59,
+   "descriptive_only": false,
+   "recall@3": {
+    "value": 0.6101694915254238,
+    "ci": [
+     0.4745762711864407,
+     0.7288135593220338
+    ]
+   },
+   "recall@5": {
+    "value": 0.6101694915254238,
+    "ci": [
+     0.4745762711864407,
+     0.7288135593220338
+    ]
+   },
+   "recall@10": {
+    "value": 0.6440677966101694,
+    "ci": [
+     0.5254237288135594,
+     0.7627118644067796
+    ]
+   },
+   "mrr@10": {
+    "value": 0.5859227871939736,
+    "ci": [
+     0.4637476459510358,
+     0.7055084745762712
+    ]
+   }
+  },
+  "category": {
+   "figure": {
+    "n": 8,
+    "descriptive_only": true,
+    "recall@3": {
+     "value": 0.875,
+     "ci": [
+      0.625,
+      1.0
+     ]
+    },
+    "recall@5": {
+     "value": 0.875,
+     "ci": [
+      0.625,
+      1.0
+     ]
+    },
+    "recall@10": {
+     "value": 1.0,
+     "ci": [
+      1.0,
+      1.0
+     ]
+    },
+    "mrr@10": {
+     "value": 0.890625,
+     "ci": [
+      0.671875,
+      1.0
+     ]
+    }
+   },
+   "lexical": {
+    "n": 14,
+    "descriptive_only": true,
+    "recall@3": {
+     "value": 1.0,
+     "ci": [
+      1.0,
+      1.0
+     ]
+    },
+    "recall@5": {
+     "value": 1.0,
+     "ci": [
+      1.0,
+      1.0
+     ]
+    },
+    "recall@10": {
+     "value": 1.0,
+     "ci": [
+      1.0,
+      1.0
+     ]
+    },
+    "mrr@10": {
+     "value": 0.9166666666666667,
+     "ci": [
+      0.7857142857142857,
+      1.0
+     ]
+    }
+   },
+   "multi_book": {
+    "n": 8,
+    "descriptive_only": true,
+    "recall@3": {
+     "value": 0.875,
+     "ci": [
+      0.625,
+      1.0
+     ]
+    },
+    "recall@5": {
+     "value": 0.875,
+     "ci": [
+      0.625,
+      1.0
+     ]
+    },
+    "recall@10": {
+     "value": 0.875,
+     "ci": [
+      0.625,
+      1.0
+     ]
+    },
+    "mrr@10": {
+     "value": 0.8125,
+     "ci": [
+      0.5625,
+      1.0
+     ]
+    }
+   },
+   "paraphrase": {
+    "n": 21,
+    "descriptive_only": false,
+    "recall@3": {
+     "value": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "recall@5": {
+     "value": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "recall@10": {
+     "value": 0.047619047619047616,
+     "ci": [
+      0.0,
+      0.14285714285714285
+     ]
+    },
+    "mrr@10": {
+     "value": 0.005291005291005291,
+     "ci": [
+      0.0,
+      0.015873015873015872
+     ]
+    }
+   },
+   "table": {
+    "n": 8,
+    "descriptive_only": true,
+    "recall@3": {
+     "value": 1.0,
+     "ci": [
+      1.0,
+      1.0
+     ]
+    },
+    "recall@5": {
+     "value": 1.0,
+     "ci": [
+      1.0,
+      1.0
+     ]
+    },
+    "recall@10": {
+     "value": 1.0,
+     "ci": [
+      1.0,
+      1.0
+     ]
+    },
+    "mrr@10": {
+     "value": 1.0,
+     "ci": [
+      1.0,
+      1.0
+     ]
+    }
+   }
+  },
+  "split": {
+   "dev": {
+    "n": 59,
+    "descriptive_only": false,
+    "recall@3": {
+     "value": 0.6101694915254238,
+     "ci": [
+      0.4745762711864407,
+      0.7288135593220338
+     ]
+    },
+    "recall@5": {
+     "value": 0.6101694915254238,
+     "ci": [
+      0.4745762711864407,
+      0.7288135593220338
+     ]
+    },
+    "recall@10": {
+     "value": 0.6440677966101694,
+     "ci": [
+      0.5254237288135594,
+      0.7627118644067796
+     ]
+    },
+    "mrr@10": {
+     "value": 0.5859227871939736,
+     "ci": [
+      0.4637476459510358,
+      0.7055084745762712
+     ]
+    }
+   }
+  },
+  "source": {
+   "A-Student039s-Guide-to-Tropical-Marine-Biology-1576764955.pdf": {
+    "n": 14,
+    "descriptive_only": true,
+    "recall@3": {
+     "value": 0.42857142857142855,
+     "ci": [
+      0.14285714285714285,
+      0.7142857142857143
+     ]
+    },
+    "recall@5": {
+     "value": 0.42857142857142855,
+     "ci": [
+      0.14285714285714285,
+      0.7142857142857143
+     ]
+    },
+    "recall@10": {
+     "value": 0.5,
+     "ci": [
+      0.21428571428571427,
+      0.7857142857142857
+     ]
+    },
+    "mrr@10": {
+     "value": 0.4017857142857143,
+     "ci": [
+      0.16071428571428573,
+      0.6517857142857143
+     ]
+    }
+   },
+   "Biology and Ecology of Fishes (3rd Ed.) by James S. Diana & Tomas O. Höök.pdf": {
+    "n": 21,
+    "descriptive_only": false,
+    "recall@3": {
+     "value": 0.7142857142857143,
+     "ci": [
+      0.5238095238095238,
+      0.9047619047619048
+     ]
+    },
+    "recall@5": {
+     "value": 0.7142857142857143,
+     "ci": [
+      0.5238095238095238,
+      0.9047619047619048
+     ]
+    },
+    "recall@10": {
+     "value": 0.7142857142857143,
+     "ci": [
+      0.5238095238095238,
+      0.9047619047619048
+     ]
+    },
+    "mrr@10": {
+     "value": 0.6825396825396826,
+     "ci": [
+      0.47619047619047616,
+      0.8730158730158729
+     ]
+    }
+   },
+   "Introduction to Marine Biology (4th Ed.) by George Karleskint, Richard Turner, James W. Small.pdf": {
+    "n": 22,
+    "descriptive_only": false,
+    "recall@3": {
+     "value": 0.7272727272727273,
+     "ci": [
+      0.5454545454545454,
+      0.9090909090909091
+     ]
+    },
+    "recall@5": {
+     "value": 0.7272727272727273,
+     "ci": [
+      0.5454545454545454,
+      0.9090909090909091
+     ]
+    },
+    "recall@10": {
+     "value": 0.7272727272727273,
+     "ci": [
+      0.5454545454545454,
+      0.9090909090909091
+     ]
+    },
+    "mrr@10": {
+     "value": 0.7045454545454546,
+     "ci": [
+      0.5,
+      0.8863636363636364
+     ]
+    }
+   },
+   "Marine Biology 12e By Peter Castro, Michael Huber.pdf": {
+    "n": 19,
+    "descriptive_only": false,
+    "recall@3": {
+     "value": 0.7368421052631579,
+     "ci": [
+      0.5263157894736842,
+      0.9473684210526315
+     ]
+    },
+    "recall@5": {
+     "value": 0.7368421052631579,
+     "ci": [
+      0.5263157894736842,
+      0.9473684210526315
+     ]
+    },
+    "recall@10": {
+     "value": 0.7894736842105263,
+     "ci": [
+      0.5789473684210527,
+      0.9473684210526315
+     ]
+    },
+    "mrr@10": {
+     "value": 0.6900584795321637,
+     "ci": [
+      0.4970760233918129,
+      0.868421052631579
+     ]
+    }
+   }
+  }
+ },
+ "exposure": {
+  "figure": 0.1575757575757576,
+  "table": 0.0196969696969697,
+  "low_quality": 0.0,
+  "table_degraded": 0.0030303030303030303,
+  "credit_only": 0.012121212121212121
+ },
+ "unanswerable": {
+  "answerable_top1_median": 22.21870534981265,
+  "unanswerable_top1_median": 11.981135897359184,
+  "answerable_top1_p10": 14.431766663372589,
+  "unanswerable_above_answerable_p10": 0.0,
+  "n_unanswerable": 7
+ },
+ "misses": [
+  {
+   "id": "q006",
+   "category": "paraphrase",
+   "question": "Why is rising carbon dioxide making it harder for animals with chalky housings to grow?",
+   "rank": null,
+   "cause_hint": "vocabulary",
+   "top3": [
+    {
+     "source": "Introduction to Marine Biol...",
+     "pages": [
+      216,
+      216
+     ],
+     "type": "text",
+     "score": 16.42
+    },
+    {
+     "source": "Biology and Ecology of Fish...",
+     "pages": [
+      56,
+      56
+     ],
+     "type": "text",
+     "score": 16.37
+    },
+    {
+     "source": "Introduction to Marine Biol...",
+     "pages": [
+      83,
+      83
+     ],
+     "type": "text",
+     "score": 16.04
+    }
+   ]
+  },
+  {
+   "id": "q007",
+   "category": "paraphrase",
+   "question": "Why do people who collect fish for home tanks often end up killing most of them?",
+   "rank": null,
+   "cause_hint": "vocabulary",
+   "top3": [
+    {
+     "source": "Biology and Ecology of Fish...",
+     "pages": [
+      181,
+      181
+     ],
+     "type": "text",
+     "score": 23.027
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      167,
+      167
+     ],
+     "type": "text",
+     "score": 14.475
+    },
+    {
+     "source": "Biology and Ecology of Fish...",
+     "pages": [
+      136,
+      136
+     ],
+     "type": "text",
+     "score": 12.833
+    }
+   ]
+  },
+  {
+   "id": "q008",
+   "category": "paraphrase",
+   "question": "What causes a sparkling light show by small sea creatures a few nights after the monthly brightest night?",
+   "rank": 67,
+   "cause_hint": "vocabulary",
+   "top3": [
+    {
+     "source": "Introduction to Marine Biol...",
+     "pages": [
+      207,
+      207
+     ],
+     "type": "text",
+     "score": 14.723
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      327,
+      327
+     ],
+     "type": "text",
+     "score": 13.302
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      110,
+      111
+     ],
+     "type": "text",
+     "score": 11.9
+    }
+   ]
+  },
+  {
+   "id": "q009",
+   "category": "paraphrase",
+   "question": "How can zapping metal frames underwater help damaged corals recover?",
+   "rank": 84,
+   "cause_hint": "vocabulary",
+   "top3": [
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      356,
+      356
+     ],
+     "type": "text",
+     "score": 16.364
+    },
+    {
+     "source": "A-Student039s-Guide-to-Trop...",
+     "pages": [
+      207,
+      208
+     ],
+     "type": "text",
+     "score": 13.619
+    },
+    {
+     "source": "A-Student039s-Guide-to-Trop...",
+     "pages": [
+      150,
+      150
+     ],
+     "type": "text",
+     "score": 12.98
+    }
+   ]
+  },
+  {
+   "id": "q010",
+   "category": "paraphrase",
+   "question": "Which spiny grazers were released in large numbers to fight a spreading foreign seaweed in the Pacific islands?",
+   "rank": null,
+   "cause_hint": "vocabulary",
+   "top3": [
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      326,
+      326
+     ],
+     "type": "figure",
+     "score": 16.725
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      352,
+      352
+     ],
+     "type": "text",
+     "score": 15.626
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      128,
+      128
+     ],
+     "type": "figure",
+     "score": 14.634
+    }
+   ]
+  },
+  {
+   "id": "q011",
+   "category": "paraphrase",
+   "question": "Which ocean animal can dump its insides to distract hunters and later regrow them?",
+   "rank": null,
+   "cause_hint": "vocabulary",
+   "top3": [
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      149,
+      149
+     ],
+     "type": "text",
+     "score": 11.804
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      149,
+      149
+     ],
+     "type": "text",
+     "score": 11.018
+    },
+    {
+     "source": "A-Student039s-Guide-to-Trop...",
+     "pages": [
+      252,
+      252
+     ],
+     "type": "text",
+     "score": 10.087
+    }
+   ]
+  },
+  {
+   "id": "q012",
+   "category": "paraphrase",
+   "question": "Which four traits define the group that humans belong to along with fish?",
+   "rank": null,
+   "cause_hint": "vocabulary",
+   "top3": [
+    {
+     "source": "Biology and Ecology of Fish...",
+     "pages": [
+      335,
+      336
+     ],
+     "type": "text",
+     "score": 14.063
+    },
+    {
+     "source": "Biology and Ecology of Fish...",
+     "pages": [
+      317,
+      317
+     ],
+     "type": "text",
+     "score": 13.746
+    },
+    {
+     "source": "Biology and Ecology of Fish...",
+     "pages": [
+      27,
+      28
+     ],
+     "type": "text",
+     "score": 13.084
+    }
+   ]
+  },
+  {
+   "id": "q023",
+   "category": "paraphrase",
+   "question": "Why are some of the world's richest fishing grounds found where chilly deep currents rise near coastlines?",
+   "rank": null,
+   "cause_hint": "vocabulary",
+   "top3": [
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      385,
+      385
+     ],
+     "type": "text",
+     "score": 21.284
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      416,
+      416
+     ],
+     "type": "text",
+     "score": 19.933
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      382,
+      382
+     ],
+     "type": "text",
+     "score": 16.962
+    }
+   ]
+  },
+  {
+   "id": "q025",
+   "category": "paraphrase",
+   "question": "How does a shoal evade an approaching hunter by dividing in two, circling it, and merging again behind it?",
+   "rank": null,
+   "cause_hint": "vocabulary",
+   "top3": [
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      213,
+      214
+     ],
+     "type": "text",
+     "score": 15.271
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      35,
+      35
+     ],
+     "type": "text",
+     "score": 11.029
+    },
+    {
+     "source": "Biology and Ecology of Fish...",
+     "pages": [
+      255,
+      255
+     ],
+     "type": "text",
+     "score": 10.89
+    }
+   ]
+  },
+  {
+   "id": "q028",
+   "category": "paraphrase",
+   "question": "What sense do returning river-run spawners use to recognise the stream where they were born?",
+   "rank": 16,
+   "cause_hint": "vocabulary",
+   "top3": [
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      185,
+      185
+     ],
+     "type": "text",
+     "score": 20.807
+    },
+    {
+     "source": "Introduction to Marine Biol...",
+     "pages": [
+      293,
+      293
+     ],
+     "type": "text",
+     "score": 16.63
+    },
+    {
+     "source": "Biology and Ecology of Fish...",
+     "pages": [
+      327,
+      327
+     ],
+     "type": "text",
+     "score": 14.808
+    }
+   ]
+  },
+  {
+   "id": "q029",
+   "category": "paraphrase",
+   "question": "Which view holds that luck rather than rivalry decides where drifting youngsters end up settling?",
+   "rank": null,
+   "cause_hint": "vocabulary",
+   "top3": [
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      350,
+      350
+     ],
+     "type": "text",
+     "score": 15.091
+    },
+    {
+     "source": "Introduction to Marine Biol...",
+     "pages": [
+      256,
+      256
+     ],
+     "type": "figure",
+     "score": 12.558
+    },
+    {
+     "source": "Biology and Ecology of Fish...",
+     "pages": [
+      298,
+      299
+     ],
+     "type": "text",
+     "score": 12.077
+    }
+   ]
+  },
+  {
+   "id": "q030",
+   "category": "paraphrase",
+   "question": "Why do calories get used up for a while after dinner even when an animal lies idle?",
+   "rank": null,
+   "cause_hint": "vocabulary",
+   "top3": [
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      240,
+      240
+     ],
+     "type": "text",
+     "score": 14.524
+    },
+    {
+     "source": "A-Student039s-Guide-to-Trop...",
+     "pages": [
+      42,
+      43
+     ],
+     "type": "text",
+     "score": 13.715
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      74,
+      74
+     ],
+     "type": "text",
+     "score": 13.29
+    }
+   ]
+  },
+  {
+   "id": "q045",
+   "category": "paraphrase",
+   "question": "How can a scientist judge how crowded a region is with creatures by labeling a handful and returning after a while?",
+   "rank": null,
+   "cause_hint": "vocabulary",
+   "top3": [
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      427,
+      428
+     ],
+     "type": "text",
+     "score": 11.912
+    },
+    {
+     "source": "Introduction to Marine Biol...",
+     "pages": [
+      534,
+      534
+     ],
+     "type": "text",
+     "score": 11.747
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      22,
+      22
+     ],
+     "type": "text",
+     "score": 10.849
+    }
+   ]
+  },
+  {
+   "id": "q046",
+   "category": "paraphrase",
+   "question": "Why does the top layer of some seas hold more salt in dry belts than in wet ones?",
+   "rank": null,
+   "cause_hint": "vocabulary",
+   "top3": [
+    {
+     "source": "Biology and Ecology of Fish...",
+     "pages": [
+      99,
+      99
+     ],
+     "type": "text",
+     "score": 20.189
+    },
+    {
+     "source": "Biology and Ecology of Fish...",
+     "pages": [
+      424,
+      424
+     ],
+     "type": "text",
+     "score": 19.252
+    },
+    {
+     "source": "Introduction to Marine Biol...",
+     "pages": [
+      329,
+      329
+     ],
+     "type": "text",
+     "score": 17.193
+    }
+   ]
+  },
+  {
+   "id": "q048",
+   "category": "paraphrase",
+   "question": "Why are the biggest creatures with jointed legs and armor-like outer skeletons found in water rather than on dry land?",
+   "rank": 100,
+   "cause_hint": "vocabulary",
+   "top3": [
+    {
+     "source": "Introduction to Marine Biol...",
+     "pages": [
+      247,
+      247
+     ],
+     "type": "text",
+     "score": 21.187
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      208,
+      208
+     ],
+     "type": "text",
+     "score": 20.864
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      194,
+      195
+     ],
+     "type": "text",
+     "score": 17.953
+    }
+   ]
+  },
+  {
+   "id": "q050",
+   "category": "paraphrase",
+   "question": "What causes fake echo-sounder readings of a solid layer floating in the middle of the ocean?",
+   "rank": 100,
+   "cause_hint": "vocabulary",
+   "top3": [
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      36,
+      36
+     ],
+     "type": "text",
+     "score": 17.812
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      395,
+      396
+     ],
+     "type": "text",
+     "score": 14.03
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      36,
+      36
+     ],
+     "type": "figure",
+     "score": 12.981
+    }
+   ]
+  },
+  {
+   "id": "q051",
+   "category": "paraphrase",
+   "question": "How could a hotter climate drown the shallow tropical ecosystems built by tiny stony animals?",
+   "rank": 32,
+   "cause_hint": "vocabulary",
+   "top3": [
+    {
+     "source": "Introduction to Marine Biol...",
+     "pages": [
+      407,
+      408
+     ],
+     "type": "text",
+     "score": 15.024
+    },
+    {
+     "source": "Introduction to Marine Biol...",
+     "pages": [
+      407,
+      407
+     ],
+     "type": "text",
+     "score": 14.751
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      333,
+      333
+     ],
+     "type": "text",
+     "score": 13.54
+    }
+   ]
+  },
+  {
+   "id": "q063",
+   "category": "paraphrase",
+   "question": "How do saltwater fishes whose blood is more dilute than the surrounding sea keep from shriveling up?",
+   "rank": null,
+   "cause_hint": "vocabulary",
+   "top3": [
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      295,
+      295
+     ],
+     "type": "figure",
+     "score": 20.123
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      374,
+      375
+     ],
+     "type": "text",
+     "score": 17.39
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      202,
+      203
+     ],
+     "type": "text",
+     "score": 17.176
+    }
+   ]
+  },
+  {
+   "id": "q065",
+   "category": "paraphrase",
+   "question": "How do animals in the lightless abyss make use of their own glow, and why don't they use it to blend in with the water above?",
+   "rank": null,
+   "cause_hint": "vocabulary",
+   "top3": [
+    {
+     "source": "Introduction to Marine Biol...",
+     "pages": [
+      281,
+      281
+     ],
+     "type": "figure",
+     "score": 16.763
+    },
+    {
+     "source": "Introduction to Marine Biol...",
+     "pages": [
+      281,
+      281
+     ],
+     "type": "text",
+     "score": 14.292
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      372,
+      372
+     ],
+     "type": "text",
+     "score": 14.209
+    }
+   ]
+  },
+  {
+   "id": "q066",
+   "category": "paraphrase",
+   "question": "How does a huge seabed creature living by scalding volcanic springs get fed when it lacks any means of eating?",
+   "rank": null,
+   "cause_hint": "vocabulary",
+   "top3": [
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      346,
+      346
+     ],
+     "type": "figure",
+     "score": 13.681
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      408,
+      408
+     ],
+     "type": "text",
+     "score": 13.598
+    },
+    {
+     "source": "Biology and Ecology of Fish...",
+     "pages": [
+      178,
+      178
+     ],
+     "type": "text",
+     "score": 13.539
+    }
+   ]
+  },
+  {
+   "id": "q081",
+   "category": "multi_book",
+   "question": "What causes the tides on Earth?",
+   "rank": 14,
+   "cause_hint": "ranking",
+   "top3": [
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      75,
+      75
+     ],
+     "type": "figure",
+     "score": 12.44
+    },
+    {
+     "source": "Introduction to Marine Biol...",
+     "pages": [
+      87,
+      87
+     ],
+     "type": "text",
+     "score": 11.158
+    },
+    {
+     "source": "Introduction to Marine Biol...",
+     "pages": [
+      103,
+      103
+     ],
+     "type": "text",
+     "score": 10.914
+    }
+   ]
+  }
+ ],
+ "questions": [
+  {
+   "id": "q001",
+   "category": "lexical",
+   "rank": 1,
+   "top1": 12.3187
+  },
+  {
+   "id": "q006",
+   "category": "paraphrase",
+   "rank": null,
+   "top1": 16.4198
+  },
+  {
+   "id": "q007",
+   "category": "paraphrase",
+   "rank": null,
+   "top1": 23.0269
+  },
+  {
+   "id": "q008",
+   "category": "paraphrase",
+   "rank": 67,
+   "top1": 14.7232
+  },
+  {
+   "id": "q009",
+   "category": "paraphrase",
+   "rank": 84,
+   "top1": 16.3638
+  },
+  {
+   "id": "q010",
+   "category": "paraphrase",
+   "rank": null,
+   "top1": 16.7247
+  },
+  {
+   "id": "q011",
+   "category": "paraphrase",
+   "rank": null,
+   "top1": 11.8039
+  },
+  {
+   "id": "q012",
+   "category": "paraphrase",
+   "rank": null,
+   "top1": 14.0632
+  },
+  {
+   "id": "q015",
+   "category": "figure",
+   "rank": 1,
+   "top1": 45.9446
+  },
+  {
+   "id": "q016",
+   "category": "figure",
+   "rank": 8,
+   "top1": 17.7757
+  },
+  {
+   "id": "q017",
+   "category": "figure",
+   "rank": 1,
+   "top1": 23.8419
+  },
+  {
+   "id": "q018",
+   "category": "lexical",
+   "rank": 1,
+   "top1": 46.4015
+  },
+  {
+   "id": "q019",
+   "category": "lexical",
+   "rank": 3,
+   "top1": 40.021
+  },
+  {
+   "id": "q020",
+   "category": "lexical",
+   "rank": 1,
+   "top1": 37.5513
+  },
+  {
+   "id": "q021",
+   "category": "lexical",
+   "rank": 1,
+   "top1": 20.6203
+  },
+  {
+   "id": "q023",
+   "category": "paraphrase",
+   "rank": null,
+   "top1": 21.2836
+  },
+  {
+   "id": "q025",
+   "category": "paraphrase",
+   "rank": null,
+   "top1": 15.2706
+  },
+  {
+   "id": "q028",
+   "category": "paraphrase",
+   "rank": 16,
+   "top1": 20.8071
+  },
+  {
+   "id": "q029",
+   "category": "paraphrase",
+   "rank": null,
+   "top1": 15.0906
+  },
+  {
+   "id": "q030",
+   "category": "paraphrase",
+   "rank": null,
+   "top1": 14.5239
+  },
+  {
+   "id": "q032",
+   "category": "table",
+   "rank": 1,
+   "top1": 27.3974
+  },
+  {
+   "id": "q034",
+   "category": "table",
+   "rank": 1,
+   "top1": 26.9455
+  },
+  {
+   "id": "q035",
+   "category": "table",
+   "rank": 1,
+   "top1": 33.6239
+  },
+  {
+   "id": "q036",
+   "category": "table",
+   "rank": 1,
+   "top1": 76.0276
+  },
+  {
+   "id": "q038",
+   "category": "figure",
+   "rank": 1,
+   "top1": 32.6072
+  },
+  {
+   "id": "q039",
+   "category": "figure",
+   "rank": 1,
+   "top1": 42.1859
+  },
+  {
+   "id": "q040",
+   "category": "lexical",
+   "rank": 1,
+   "top1": 21.982
+  },
+  {
+   "id": "q041",
+   "category": "lexical",
+   "rank": 1,
+   "top1": 46.2772
+  },
+  {
+   "id": "q042",
+   "category": "lexical",
+   "rank": 1,
+   "top1": 53.0149
+  },
+  {
+   "id": "q044",
+   "category": "lexical",
+   "rank": 1,
+   "top1": 25.0004
+  },
+  {
+   "id": "q045",
+   "category": "paraphrase",
+   "rank": null,
+   "top1": 11.9118
+  },
+  {
+   "id": "q046",
+   "category": "paraphrase",
+   "rank": null,
+   "top1": 20.1891
+  },
+  {
+   "id": "q048",
+   "category": "paraphrase",
+   "rank": 100,
+   "top1": 21.1866
+  },
+  {
+   "id": "q050",
+   "category": "paraphrase",
+   "rank": 100,
+   "top1": 17.812
+  },
+  {
+   "id": "q051",
+   "category": "paraphrase",
+   "rank": 32,
+   "top1": 15.0237
+  },
+  {
+   "id": "q052",
+   "category": "table",
+   "rank": 1,
+   "top1": 28.8429
+  },
+  {
+   "id": "q053",
+   "category": "table",
+   "rank": 1,
+   "top1": 21.9378
+  },
+  {
+   "id": "q054",
+   "category": "figure",
+   "rank": 1,
+   "top1": 51.1786
+  },
+  {
+   "id": "q055",
+   "category": "figure",
+   "rank": 1,
+   "top1": 37.2574
+  },
+  {
+   "id": "q056",
+   "category": "figure",
+   "rank": 1,
+   "top1": 39.5968
+  },
+  {
+   "id": "q057",
+   "category": "lexical",
+   "rank": 1,
+   "top1": 34.652
+  },
+  {
+   "id": "q058",
+   "category": "lexical",
+   "rank": 1,
+   "top1": 24.4757
+  },
+  {
+   "id": "q059",
+   "category": "lexical",
+   "rank": 1,
+   "top1": 33.3547
+  },
+  {
+   "id": "q060",
+   "category": "lexical",
+   "rank": 2,
+   "top1": 41.9664
+  },
+  {
+   "id": "q062",
+   "category": "lexical",
+   "rank": 1,
+   "top1": 31.9286
+  },
+  {
+   "id": "q063",
+   "category": "paraphrase",
+   "rank": null,
+   "top1": 20.1226
+  },
+  {
+   "id": "q064",
+   "category": "paraphrase",
+   "rank": 9,
+   "top1": 22.8103
+  },
+  {
+   "id": "q065",
+   "category": "paraphrase",
+   "rank": null,
+   "top1": 16.7626
+  },
+  {
+   "id": "q066",
+   "category": "paraphrase",
+   "rank": null,
+   "top1": 13.6812
+  },
+  {
+   "id": "q071",
+   "category": "table",
+   "rank": 1,
+   "top1": 41.2318
+  },
+  {
+   "id": "q072",
+   "category": "table",
+   "rank": 1,
+   "top1": 32.9321
+  },
+  {
+   "id": "q077",
+   "category": "multi_book",
+   "rank": 1,
+   "top1": 27.8963
+  },
+  {
+   "id": "q079",
+   "category": "multi_book",
+   "rank": 1,
+   "top1": 21.3453
+  },
+  {
+   "id": "q081",
+   "category": "multi_book",
+   "rank": 14,
+   "top1": 12.4396
+  },
+  {
+   "id": "q083",
+   "category": "multi_book",
+   "rank": 2,
+   "top1": 17.8233
+  },
+  {
+   "id": "q084",
+   "category": "multi_book",
+   "rank": 1,
+   "top1": 18.7893
+  },
+  {
+   "id": "q085",
+   "category": "multi_book",
+   "rank": 1,
+   "top1": 26.6159
+  },
+  {
+   "id": "q086",
+   "category": "multi_book",
+   "rank": 1,
+   "top1": 22.2187
+  },
+  {
+   "id": "q088",
+   "category": "multi_book",
+   "rank": 1,
+   "top1": 21.354
+  },
+  {
+   "id": "q089",
+   "category": "unanswerable",
+   "rank": null,
+   "top1": 11.9811
+  },
+  {
+   "id": "q090",
+   "category": "unanswerable",
+   "rank": null,
+   "top1": 13.291
+  },
+  {
+   "id": "q093",
+   "category": "unanswerable",
+   "rank": null,
+   "top1": 12.6055
+  },
+  {
+   "id": "q095",
+   "category": "unanswerable",
+   "rank": null,
+   "top1": 8.9105
+  },
+  {
+   "id": "q096",
+   "category": "unanswerable",
+   "rank": null,
+   "top1": 10.3512
+  },
+  {
+   "id": "q097",
+   "category": "unanswerable",
+   "rank": null,
+   "top1": 9.5994
+  },
+  {
+   "id": "q098",
+   "category": "unanswerable",
+   "rank": null,
+   "top1": 12.4832
+  }
+ ]
+}
