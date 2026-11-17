@@ -1,0 +1,20 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rag-mvp"
+version = "0.1.0"
+description = "Minimal local text retrieval project"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pymupdf>=1.26,<2",
+]
+
+[project.scripts]
+rag = "rag_mvp.cli:main"
+rag-ingest = "rag_mvp.ingest:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rag_mvp"]

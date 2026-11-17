@@ -1,0 +1,27 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+build/
+dist/
+.env
+.env.*
+
+# Editor/OS files (.vscode holds a machine-specific interpreter path).
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Temporary handoff notes, not meant to be committed.
+HANDOFF.md
+
+# Keep the directory layout, not supplied documents or generated artifacts.
+data/raw/**
+!data/raw/.gitkeep
+data/processed/**
+!data/processed/.gitkeep
