@@ -1,0 +1,11 @@
+{
+  "defaults": {"detect": {"size_tolerance": 0.03, "min_run_pages": 10, "max_reference_pages": 40}},
+  "books": {
+    "Marine Biology 12e By Peter Castro, Michael Huber.pdf": {
+      "sha256": "f24cde082efb105bcdb953ef7a9e4a7a7b8ceea7f3350ddc7ed6729bae232b79",
+      "exclude_pages": [
+        {"pages": [495, 812], "reason": "blank pages and an unrelated scanned book appended to the PDF"}
+      ]
+    }
+  }
+}

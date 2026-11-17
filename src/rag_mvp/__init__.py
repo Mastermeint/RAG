@@ -1,0 +1,1 @@
+"""Minimal text retrieval over local documents."""
