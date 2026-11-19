@@ -21,6 +21,7 @@ class Block:
     size: float = 0.0
     bold: bool = False
     margin: str | None = None  # "top" or "bottom" for candidates for header/footer removal
+    lead_bold: bool = False  # first line opens with a short bold term followed by regular text (run-in heading)
     markdown: str = ""
     caption: str = ""
     rows: int = 0
@@ -144,14 +145,26 @@ def _find_tables(page: pymupdf.Page, number: int) -> list[Block]:
     return tables
 
 
-def _line_stats(line: dict) -> tuple[str, float, float] | None:
+RUN_IN_MAX_WORDS = 6
+
+
+def _is_bold(span: dict) -> bool:
+    return bool(span["flags"] & 16) or "bold" in span["font"].lower()
+
+
+def _line_stats(line: dict) -> tuple[str, float, float, bool] | None:
     spans = [s for s in line["spans"] if s["text"].strip()]
     if not spans:
         return None
     chars = sum(len(s["text"]) for s in spans)
     size = sum(s["size"] * len(s["text"]) for s in spans) / chars
-    bold = sum(len(s["text"]) for s in spans if s["flags"] & 16 or "bold" in s["font"].lower()) / chars
-    return clean_chars("".join(s["text"] for s in line["spans"])).strip(), size, bold
+    bold = sum(len(s["text"]) for s in spans if _is_bold(s)) / chars
+    lead = 0
+    while lead < len(spans) and _is_bold(spans[lead]):
+        lead += 1
+    lead_text = " ".join(s["text"] for s in spans[:lead])
+    lead_bold = 0 < lead < len(spans) and len(lead_text.split()) <= RUN_IN_MAX_WORDS
+    return clean_chars("".join(s["text"] for s in line["spans"])).strip(), size, bold, lead_bold
 
 
 @dataclass
@@ -160,6 +173,7 @@ class _Line:
     text: str
     size: float
     bold: float
+    lead_bold: bool
     source: int  # index of the PDF text block this line came from
 
     x0 = property(lambda self: self.box[0])
@@ -246,7 +260,7 @@ def _regrid(page: pymupdf.Page, bbox: tuple, number: int) -> Block | None:
         return None
     size = sorted(heights)[len(heights) // 2] / 1.2  # word boxes are about 1.2x taller than the font size
     items = [_Line((g[0][0], min(w[1] for w in g), g[-1][2], max(w[3] for w in g)),
-                   clean_chars(" ".join(w[4] for w in g)), size, 0.0, 0) for g in cells]
+                   clean_chars(" ".join(w[4] for w in g)), size, 0.0, False, 0) for g in cells]
     rows = _visual_rows(items, size)
     first = next((i for i, r in enumerate(rows) if len(r) >= 2), None)
     if first is None:
@@ -367,6 +381,27 @@ def _overlap(a0: float, a1: float, b0: float, b1: float) -> float:
     return max(0.0, min(a1, b1) - max(a0, b0))
 
 
+DROP_CAP_SCALE = 2.5  # a decorated initial is at least this many times the median line size
+_DROP_CAP = re.compile(r"^[\"“‘']?[A-Z]$")
+
+
+def _attach_drop_caps(lines: list[_Line]) -> list[_Line]:
+    """Glue an oversized chapter-opening initial ('F' + 'ishes were...') back onto the line beside it."""
+    if len(lines) < 2:
+        return lines
+    median = sorted(ln.size for ln in lines)[len(lines) // 2]
+    caps = [ln for ln in lines if _DROP_CAP.match(ln.text) and ln.size >= DROP_CAP_SCALE * median]
+    for cap in caps:
+        beside = [ln for ln in lines if ln is not cap and 0 <= ln.x0 - cap.x1 + 3 <= 3 * median + 3
+                  and cap.y0 - 0.5 * median <= ln.cy <= cap.y1 and ln.text[:1].isalpha()]
+        if not beside:
+            continue
+        target = min(beside, key=lambda ln: ln.y0)
+        target.text = cap.text + target.text
+        lines = [ln for ln in lines if ln is not cap]
+    return lines
+
+
 def extract_page(page: pymupdf.Page, number: int, textpage: pymupdf.TextPage | None = None) -> PageLayout:
     rect = page.rect
     layout = PageLayout(number, rect.width, rect.height)
@@ -396,6 +431,7 @@ def extract_page(page: pymupdf.Page, number: int, textpage: pymupdf.TextPage | N
             lines.append(_Line(tuple(line["bbox"]), *stats, index))
 
     if not layout.scanned:
+        lines = _attach_drop_caps(lines)
         layout.figures += _vector_figures(page, lines, images)
     labels = [ln for ln in lines if _TABLE_LABEL.match(ln.text)]
     # Rules also frame diagrams and sidebars; a real table has a 'TABLE n' caption close by.
@@ -415,7 +451,7 @@ def extract_page(page: pymupdf.Page, number: int, textpage: pymupdf.TextPage | N
                 number, (min(c.x0 for c in current), min(c.y0 for c in current),
                          max(c.x1 for c in current), max(c.y1 for c in current)),
                 "text", [c.text for c in current], sum(sizes) / len(sizes),
-                sum(c.bold for c in current) / len(current) >= 0.9))
+                sum(c.bold for c in current) / len(current) >= 0.9, lead_bold=current[0].lead_bold))
             current.clear()
 
     for ln in lines:

@@ -7,6 +7,7 @@ import pymupdf
 
 import fixtures
 from rag_mvp.chunking import Element, chunk_elements
+from rag_mvp.ingest import _CREDIT
 from rag_mvp.layout import _degraded, _regrid, extract_page
 from test_layout_ingest import IngestCase, naive_pages
 
@@ -133,6 +134,60 @@ class ChunkSizeCap(unittest.TestCase):
         table = Element("table", 1, 1, markdown="| a | b |\n| --- | --- |\n| 1 | 2 |", degraded=True,
                         toc_path=["Ch"], chapter="Ch")
         self.assertTrue(chunk_elements([table], None, "doc", "b.pdf")[0]["table_structure_degraded"])
+
+    def test_a_page_of_glossary_asides_is_split_at_the_size_cap(self):
+        """12e back-matter glossary: a page made only of asides first became one 1,110-word chunk."""
+        entry = "Term{} The definition of this glossary term takes about twenty words to explain it fully here."
+        asides = [Element("aside", 1, 1, [entry.format(i)], toc_path=["Glossary"], chapter="G") for i in range(60)]
+        chunks = chunk_elements(asides, None, "doc", "b.pdf")
+        self.assertGreater(len(chunks), 1)
+        self.assertTrue(all(len(c["text"].split()) <= 380 for c in chunks))
+        self.assertEqual(sum(c["text"].count("Term") for c in chunks), 60)
+
+
+class ChapterOpenings(IngestCase):
+    """12e/Fishes/Student's Guide defects fixed in extractor version 4."""
+
+    def chunks(self):
+        pdf, _, chunks, _ = self.ingest(fixtures.book_with_chapter_opening)
+        return pdf, chunks
+
+    def test_drop_cap_initial_is_glued_back_onto_its_word(self):
+        pdf, chunks = self.chunks()
+        text = " ".join(c["text"] for c in chunks)
+        self.assertIn("Fishes were the first vertebrates", text)
+        self.assertFalse([c for c in chunks if c["text"].startswith("ishes")])
+        self.assertNotIn("Fishes were", naive_pages(pdf)[0])  # control: the initial is a separate glyph
+
+    def test_margin_glossary_gets_its_own_chunk_and_the_prose_flows_around_it(self):
+        pdf, chunks = self.chunks()
+        glossary = [c for c in chunks if "selectively permeable" in c["text"]]
+        self.assertEqual(len(glossary), 1)
+        self.assertTrue(glossary[0]["text"].startswith("Osmosis The diffusion"))
+        self.assertIn("Diffusion The movement", glossary[0]["text"])
+        self.assertNotIn("Bony fishes", glossary[0]["text"])
+        self.assertTrue([c for c in chunks if "every single day and their kidneys excrete" in c["text"]])
+        self.assertTrue([c for c in chunks if "From food and feces collection:" in c["text"]
+                         and "Egestion equals" in c["text"]])  # a short run-in label stays with its prose
+        page = naive_pages(pdf)[0]  # control: the glossary sits between the two halves of the sentence
+        self.assertLess(page.index("every single day"), page.index("selectively permeable"))
+        self.assertLess(page.index("selectively permeable"), page.index("and their kidneys"))
+
+    def test_caption_between_picture_and_credit_line_is_kept_with_the_credit(self):
+        _, chunks = self.chunks()
+        figures = [c for c in chunks if c["type"] == "figure" and c["page"] == 2]
+        self.assertEqual([c["text"] for c in figures], ["A reef shark photographed at Roatan, Honduras. CC BY 2.5"])
+        self.assertTrue([c for c in chunks if c["type"] == "text" and c["text"].startswith("Photosynthesis by")])
+
+    def test_credit_keywords_must_be_whole_words(self):
+        for text in ("Photosynthesis by the algae", "Phototrophic bacteria", "Credits and acknowledgements"):
+            self.assertIsNone(_CREDIT.search(text), text)
+        for text in ("Photo: A. Smith", "Source: Bill Ober", "Source:NOAA", "Courtesy of the museum", "CC BY 2.5"):
+            self.assertIsNotNone(_CREDIT.search(text), text)
+
+    def test_video_placeholder_never_reaches_a_chunk(self):
+        _, chunks = self.chunks()
+        self.assertFalse([c for c in chunks if "has been excluded" in c["text"] or "view it online" in c["text"]])
 
 
 if __name__ == "__main__":

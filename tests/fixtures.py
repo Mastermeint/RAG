@@ -170,6 +170,55 @@ def book_with_figures(path: Path) -> None:
     doc.close()
 
 
+BOLD = pymupdf.Font("hebo")
+
+
+def book_with_chapter_opening(path: Path) -> None:
+    """12e/Fishes chapter openings: a 40 pt drop cap, a small-print margin glossary with bold run-in terms placed
+    between two body paragraphs, a photo whose caption sits above its credit line, and an e-book video placeholder."""
+    pix = pymupdf.Pixmap(pymupdf.csRGB, pymupdf.IRect(0, 0, 300, 200), False)
+    pix.set_rect(pix.irect, (60, 120, 200))
+    counter = [0]
+    doc = pymupdf.open()
+    for number in range(4):
+        page = doc.new_page(width=LETTER.width, height=LETTER.height)
+        page.insert_text((72, 30), "RUNNING HEADER TEXT", fontsize=9)
+        if number == 0:
+            write_line(page, (72, 130), "F", size=40)
+            write_line(page, (100, 105), "ishes were the first vertebrates, appearing more than 500 million")
+            write_line(page, (100, 118), "years ago, and they soon spread through every ocean basin there is.")
+            write_line(page, (72, 145), "Sharks and rays followed later and are known for their cartilage skeletons.")
+            page.insert_textbox(pymupdf.Rect(72, 160, 540, 260), "Bony fishes swallow seawater to replace the water "
+                                "they lose by osmosis through their gills every single day", fontsize=10)
+            for y, term, definition in ((280, "Osmosis", "The diffusion of water across a selectively permeable "
+                                         "membrane such as a cell membrane."),
+                                        (300, "Diffusion", "The movement of molecules from areas of high to low "
+                                         "concentration in any medium.")):
+                writer = pymupdf.TextWriter(page.rect)
+                writer.append((72, y), term + " ", font=BOLD, fontsize=7)
+                writer.append(writer.last_point, definition, font=FONT, fontsize=7)
+                writer.write_text(page)
+            page.insert_textbox(pymupdf.Rect(72, 320, 540, 420), "and their kidneys excrete the extra salts while "
+                                "special chloride cells in the gills pump out the rest of it.", fontsize=10)
+            writer = pymupdf.TextWriter(page.rect)
+            writer.append((72, 440), "1. ", font=BOLD, fontsize=7)
+            writer.append(writer.last_point, "From food and feces collection:", font=FONT, fontsize=7)
+            writer.write_text(page)
+            page.insert_textbox(pymupdf.Rect(72, 450, 540, 520), "Egestion equals the feces divided by the food "
+                                "eaten, measured over several days in the laboratory tanks.", fontsize=10)
+        if number == 1:
+            page.insert_image(pymupdf.Rect(150, 100, 450, 300), pixmap=pix)
+            write_line(page, (170, 312), "A reef shark photographed at Roatan, Honduras.")
+            write_line(page, (280, 330), "CC BY 2.5")
+            page.insert_image(pymupdf.Rect(150, 400, 450, 600), pixmap=pix)
+            write_line(page, (72, 622), "Photosynthesis by the algae in shallow water drives the growth of the reef.")
+            write_line(page, (72, 680), "A YouTube element has been excluded from this version of the")
+            write_line(page, (72, 692), "text. You can view it online here: https://example.org/video")  # wraps as in the book
+        page.insert_textbox(pymupdf.Rect(72, 700, 540, 760), filler(counter, 2), fontsize=10)
+    doc.save(path)
+    doc.close()
+
+
 def scanned_book(path: Path, layer_text: str, pages: int = 4, with_layer: bool = True) -> None:
     """Each page is a full-page bitmap of printed text, optionally with an invisible (OCR-style) text layer."""
     printed = pymupdf.open()

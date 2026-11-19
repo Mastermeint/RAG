@@ -19,9 +19,9 @@ from rag_mvp.ingest_config import BookConfig, DetectConfig, Range, config_for, l
 from rag_mvp.layout import Block, PageLayout, extract_page, reading_order
 from rag_mvp.textclean import build_vocabulary, clean_chars, damage, is_noise, join_lines, repair_ocr, text_quality
 
-EXTRACTOR_VERSION = "3"
+EXTRACTOR_VERSION = "4"
 MANIFEST_SCHEMA = 2
-_CAPTION = re.compile(r"^\W{0,2}(fig(?:ure)?|f[il1]gure|table)\b\.?\s*([A-Z]?\d)", re.I)
+_CAPTION = re.compile(r"^\W{0,2}(fig(?:ure)?|f[il1]_?gure|table)\b\.?\s*([A-Z]?\d)", re.I)
 _TERMINAL = re.compile(r"[.!?:;\"”’)\]]$")
 _CHAPTER_TITLE = re.compile(r"(?i)^(chapter|ch\.)\s*\d+|^\d+\s*[:.]")
 _CHAPTER_HEADER = re.compile(r"(?i)\bchapter\s+(\d(?:\s?[0-9OIl])?)\s+(.+)")
@@ -30,6 +30,9 @@ _REFERENCE_TITLE = re.compile(
     r"(?i)^(cover|title page|copyright( page)?|contents|table of contents|dedication|preface|foreword|"
     r"acknowledg\w*|about the authors?|eula|index|eye on science boxes|list of .*)$")
 _PAGE_NUMBER = (re.compile(r"^\s*(\d{1,4})(?!\d)"), re.compile(r"(?<!\d)(\d{1,4})\s*$"))
+_PLACEHOLDER = re.compile(r"(?i)\belement has been excluded from this version\b|\byou can view (?:it|them) online here\b")
+ASIDE_SIZE_GAP = 0.9  # run-in paragraphs at least this much smaller than body text are margin notes
+ASIDE_MIN_WORDS = 8  # a glossary entry is a term plus a definition; shorter run-in lines (list labels) stay in the prose
 
 
 @dataclass
@@ -68,9 +71,10 @@ class _Para:
     bbox: list[float]
     size: float
     bold: bool
-    kind: str = "text"  # text | heading | caption | table
+    kind: str = "text"  # text | heading | caption | table | aside
     caption_for: str = ""
     block: Block | None = None
+    lead_bold: bool = False
 
     @property
     def text(self) -> str:
@@ -147,7 +151,8 @@ def _wrap_paragraphs(blocks: list[Block]) -> list[_Para]:
                 prev_para.bbox = [prev_para.bbox[0], prev_para.bbox[1], max(prev_para.bbox[2], block.x1), block.y1]
                 prev_para.block = block
                 continue
-        paras.append(_Para(block.page, list(block.lines), list(block.bbox), block.size, block.bold, block=block))
+        paras.append(_Para(block.page, list(block.lines), list(block.bbox), block.size, block.bold, block=block,
+                           lead_bold=block.lead_bold))
     return paras
 
 
@@ -155,6 +160,8 @@ def _page_paragraphs(layout: PageLayout, kept_margins: list[Block]) -> list[_Par
     blocks = reading_order(layout.blocks + kept_margins) if kept_margins else layout.blocks
     body = []
     for block in blocks:
+        if block.kind == "text" and _PLACEHOLDER.search(block.raw_text):
+            continue  # "A YouTube element has been excluded..." left behind by e-book exports
         if block.kind == "text" and any(_inside(f, block) for f in layout.figures):
             text = block.raw_text
             if len(text) / max(len(block.lines), 1) < 40 or len(text) < 80:
@@ -198,6 +205,11 @@ def _classify(paras: list[_Para], layout: PageLayout, body_size: float) -> list[
                     index += 1
                 result.append(para)
                 continue
+        if (native and body_size and para.lead_bold and para.size <= body_size - ASIDE_SIZE_GAP
+                and len(para.text.split()) >= ASIDE_MIN_WORDS):
+            para.kind = "aside"  # margin glossary entry or side note: kept, but out of the running prose
+            result.append(para)
+            continue
         if native and body_size:
             text = para.text
             big = para.size >= 1.18 * body_size
@@ -230,34 +242,49 @@ def _assign_figures(layout: PageLayout, paras: list[_Para]) -> dict[int, list[tu
     return assigned
 
 
-_CREDIT = re.compile(r"(?i)^\W?[“\"].+[”\"]\s*(by|via|from)\b|\b(wikimedia|creative commons|cc by|photo|courtesy|credit|source:)")
+_CREDIT = re.compile(r"(?i)^\W?[“\"].+[”\"]\s*(by|via|from)\b|\b(wikimedia|creative commons|cc by|photo|courtesy|credit)\b|"
+                     r"\bsource:")
 
 
 def _adopt_credit_captions(layout: PageLayout, paras: list[_Para], assigned: dict[int, list[tuple]],
                            body_size: float) -> int:
-    """Pictures without a 'Figure N' caption: use an adjacent small-print or credit line as the caption."""
+    """Pictures without a 'Figure N' caption: use an adjacent small-print or credit line as the caption.
+
+    A line sitting between the picture and an adopted credit line is the caption proper and is joined to it."""
     taken = {tuple(f) for rects in assigned.values() for f in rects}
     orphans = 0
     for figure in layout.figures:
         if tuple(figure) in taken:
             continue
         best = None
+        candidates = []
         for para in paras:
-            if para.kind != "text" or para.block is None or len(para.text) > 300:
+            if para.kind not in ("text", "aside") or para.block is None or len(para.text) > 300:
                 continue
             below, above = para.bbox[1] - figure[3], figure[1] - para.bbox[3]
-            gap = below if -2 <= below <= 30 else above if -2 <= above <= 30 else None
+            side, gap = ("below", below) if -2 <= below <= 30 else ("above", above) if -2 <= above <= 30 else ("", None)
             width = para.bbox[2] - para.bbox[0]
             if gap is None or _overlap(figure[0], figure[2], para.bbox[0], para.bbox[2]) < 0.5 * width:
                 continue
+            candidates.append((gap, side, para))
             small = not layout.scanned and body_size and para.size < body_size - 0.3
-            if (small or _CREDIT.search(para.text)) and (best is None or gap < best[0]):
-                best = (gap, para)
+            credit = bool(_CREDIT.search(para.text))
+            if (small or credit) and (best is None or gap < best[0]):
+                best = (gap, side, para, credit)
         if best is None:
             orphans += 1
             continue
-        best[1].kind, best[1].caption_for = "caption", "figure"
-        assigned.setdefault(id(best[1]), []).append(figure)
+        gap, side, chosen, credit = best
+        if credit:
+            between = sorted((c for c in candidates if c[1] == side and c[0] < gap and c[2] is not chosen),
+                             key=lambda c: c[0], reverse=side == "above")  # top-to-bottom reading order
+            if between:
+                lines = [line for _, _, para in between for line in para.lines]
+                chosen.lines = lines + chosen.lines if side == "below" else chosen.lines + lines
+                for _, _, para in between:
+                    paras.remove(para)
+        chosen.kind, chosen.caption_for = "caption", "figure"
+        assigned.setdefault(id(chosen), []).append(figure)
     return orphans
 
 
@@ -538,8 +565,8 @@ def ingest_pdf(pdf: Path, output: Path, first_page: int = 1, last_page: int | No
                     page_text.append(text)
                     figures += 1
                 elif not is_noise(text):
-                    page_elements.append(Element("heading" if para.kind == "heading" else "paragraph", n, n,
-                                                 para.lines, size=para.size, scanned=layout.scanned))
+                    kind = {"heading": "heading", "aside": "aside"}.get(para.kind, "paragraph")
+                    page_elements.append(Element(kind, n, n, para.lines, size=para.size, scanned=layout.scanned))
                     page_text.append(text)
             joined = " ".join(page_text)
             quality = text_quality(joined)

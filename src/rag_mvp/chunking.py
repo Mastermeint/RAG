@@ -12,7 +12,7 @@ _SENTENCE = re.compile(r"(?<=[.!?])\s+(?=[A-Z“\"(\[])")
 
 @dataclass
 class Element:
-    kind: str  # paragraph | heading | table | figure
+    kind: str  # paragraph | heading | table | figure | aside
     page: int
     page_end: int
     lines: list[str] = field(default_factory=list)
@@ -107,7 +107,28 @@ def chunk_elements(elements: list[Element], vocab, doc_id: str, source: str, tar
         state.update(units=[" ".join(tail)] if tail else [], words=sum(map(_words, tail)), fresh=0,
                      first=state["last"] if tail else None)
 
+    asides: list[Element] = []
+
+    def emit_asides() -> None:
+        """Margin notes on one page become their own chunk(s), so they neither split nor pad the prose around them."""
+        group: list[Element] = []
+        for element in asides + [None]:
+            words = sum(_words(_render(e, vocab)) for e in group)
+            if group and (element is None or words + _words(_render(element, vocab)) > max_words):
+                emit("text", "\n\n".join(_render(e, vocab) for e in group), group[0], group[-1],
+                     list(group[0].toc_path))
+                group = []
+            if element is not None:
+                group.append(element)
+        asides.clear()
+
     for element in _merge_continuations(elements):
+        if element.kind == "aside":
+            if asides and asides[-1].page != element.page:
+                emit_asides()
+            asides.append(element)
+            continue
+        emit_asides()
         scope = (tuple(element.toc_path[:2]), element.chapter)
         if scope != previous_scope:
             flush(carry=False)
@@ -154,5 +175,6 @@ def chunk_elements(elements: list[Element], vocab, doc_id: str, source: str, tar
             state["path"] = path
             if state["words"] >= target_words:
                 flush(carry=True)
+    emit_asides()
     flush(carry=False)
     return chunks

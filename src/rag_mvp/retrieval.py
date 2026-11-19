@@ -8,7 +8,7 @@ from collections import Counter
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from rag_mvp.credits import is_credit_line
+from rag_mvp.credits import is_credit_only
 
 CREDIT_MAX_WORDS = 15
 _STOPWORDS = frozenset(
@@ -87,7 +87,7 @@ def load_passages(data_dir: Path, chunk_size: int = 1000, overlap: int = 150) ->
                     r.get("page_label"), kind, tuple(r.get("section_path", ())),
                     tuple(r.get("images", ())), r.get("id", ""), r.get("chapter", ""), r.get("page_label_end"),
                     r.get("low_quality", False), r.get("table_structure_degraded", False),
-                    kind == "figure" and len(text.split()) < CREDIT_MAX_WORDS and is_credit_line(text)))
+                    kind == "figure" and len(text.split()) < CREDIT_MAX_WORDS and is_credit_only(text)))
         else:
             name = path.relative_to(data_dir).as_posix()
             for number, piece in enumerate(_windows(path.read_text(encoding="utf-8").strip(), chunk_size, overlap), 1):

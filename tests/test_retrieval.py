@@ -144,8 +144,9 @@ class CreditLines(unittest.TestCase):
             {"type": "figure", "text": "Figure 3.2 Kelp forest"},
             {"type": "figure", "text": "A photo of the reef crest taken at dawn by the dive team"},
             {"type": "figure", "text": long_credit},
+            {"type": "figure", "text": "A Caribbean reef shark photographed at Roatan, Honduras. CC BY 2.5"},
             {"type": "text", "text": "Photo by A. Smith"})]
-        self.assertEqual(marked, [True, False, False, False, False, False])
+        self.assertEqual(marked, [True, False, False, False, False, False, False])
 
     def test_a_credit_only_passage_is_hidden_at_weight_zero_and_still_reachable_otherwise(self):
         credit = Passage("c", 1, "Photo by A. Smith of a coral", type="figure", images=("d/p1.jpg",), credit_only=True)
