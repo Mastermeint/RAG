@@ -25,3 +25,7 @@ data/raw/**
 !data/raw/.gitkeep
 data/processed/**
 !data/processed/.gitkeep
+
+# Embedding model weights (hundreds of MB); fetched and hash-checked by `uv run rag-embed download`.
+models/**
+!models/README.md

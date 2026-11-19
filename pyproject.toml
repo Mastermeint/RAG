@@ -5,16 +5,20 @@ build-backend = "hatchling.build"
 [project]
 name = "rag-mvp"
 version = "0.1.0"
-description = "Minimal local text retrieval project"
+description = "Local textbook retrieval: structure-aware PDF ingestion, BM25 and hybrid embedding search"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "numpy>=2.4.6",
+    "onnxruntime>=1.32.0",
     "pymupdf>=1.26,<2",
+    "tokenizers>=0.23.3",
 ]
 
 [project.scripts]
 rag = "rag_mvp.cli:main"
 rag-ingest = "rag_mvp.ingest:main"
+rag-embed = "rag_mvp.embeddings:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/rag_mvp"]

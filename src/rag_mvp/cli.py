@@ -5,7 +5,8 @@ import sys
 from pathlib import Path
 
 from rag_mvp.console import use_utf8
-from rag_mvp.retrieval import Index, load_corpus
+from rag_mvp.embeddings import DEFAULT_MODE, MODES, ModelMissing, VectorsMissing, build_index
+from rag_mvp.retrieval import load_corpus
 
 
 def format_passage(number: int, passage) -> str:
@@ -34,6 +35,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--top-k", type=int, default=3)
     parser.add_argument("--type", action="append", choices=["text", "table", "figure"],
                         help="restrict results to a chunk type (repeatable)")
+    parser.add_argument("--mode", choices=MODES,
+                        help=f"bm25: word matching; dense: meaning (embeddings); hybrid: both (default: {DEFAULT_MODE}, "
+                             f"falling back to bm25 when the model or saved vectors are missing)")
     args = parser.parse_args(argv)
 
     if args.top_k < 1:
@@ -42,7 +46,14 @@ def main(argv: list[str] | None = None) -> int:
     if not passages:
         print("No searchable text found; add .txt/.md files or run rag-ingest on a PDF.", file=sys.stderr)
         return 1
-    matches = Index(passages).search(args.question, args.top_k, set(args.type) if args.type else None)
+    try:
+        index = build_index(passages, args.mode or DEFAULT_MODE)
+    except (ModelMissing, VectorsMissing) as error:
+        if args.mode:
+            parser.error(str(error))
+        print(f"note: {error}; using bm25 word matching only", file=sys.stderr)
+        index = build_index(passages, "bm25")
+    matches = index.search(args.question, args.top_k, set(args.type) if args.type else None)
     if not matches:
         print("No matching excerpts found; try a more specific question.", file=sys.stderr)
         return 1

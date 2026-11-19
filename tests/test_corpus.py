@@ -10,7 +10,7 @@ import unittest
 from collections import Counter
 from pathlib import Path
 
-from rag_mvp.evaluation import MIN_COUNTS, SELFTEST_MIN_SHARE, lint, load_questions, selftest
+from rag_mvp.evaluation import MIN_COUNTS, SELFTEST_MIN_SHARE, SPLITS, lint, load_questions, selftest
 from rag_mvp.ingest import EXTRACTOR_VERSION, MANIFEST_SCHEMA, excluded_share
 from rag_mvp.ingest_config import DetectConfig, load_settings
 from rag_mvp.retrieval import Index, load_corpus
@@ -53,9 +53,9 @@ class RealEvaluationSet(unittest.TestCase):
         for category, minimum in MIN_COUNTS.items():
             self.assertGreaterEqual(counts[category], minimum, category)
         self.assertGreaterEqual(len(self.questions), 96)
-        self.assertTrue(all(q.split in ("dev", "holdout") for q in self.questions))
+        self.assertTrue(all(q.split in SPLITS for q in self.questions))
         self.assertTrue({g.source for q in self.questions for g in q.gold} <= set(BOOKS_DATA))
-        self.assertTrue(any(q.split == "holdout" for q in self.questions))
+        self.assertTrue(any(q.split == "holdout2" for q in self.questions))
 
     def test_the_self_test_passes_overall(self):
         result = selftest(self.passages)

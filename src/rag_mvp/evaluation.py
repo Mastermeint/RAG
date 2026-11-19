@@ -14,14 +14,17 @@ from dataclasses import asdict, dataclass, fields, replace
 from pathlib import Path
 
 from rag_mvp.console import use_utf8
+from rag_mvp.embeddings import (DEFAULT_MODE, DEFAULT_MODEL, LEXICAL_WEIGHT, MODELS, MODES, ModelMissing,
+                                VectorsMissing, build_index, describe)
 from rag_mvp.retrieval import NEUTRAL, Index, Passage, RankingConfig, load_corpus, tokenize
 
 ROOT = Path(__file__).resolve().parents[2]
 QUESTIONS_PATH = ROOT / "eval" / "questions.jsonl"
 
-CATEGORIES = ("lexical", "paraphrase", "table", "figure", "multi_book", "unanswerable")
-MIN_COUNTS = {"lexical": 20, "paraphrase": 30, "table": 12, "figure": 12, "multi_book": 12, "unanswerable": 10}
-SPLITS = ("dev", "holdout")
+CATEGORIES = ("lexical", "paraphrase", "student", "table", "figure", "multi_book", "unanswerable")
+MIN_COUNTS = {"lexical": 20, "paraphrase": 30, "student": 12, "table": 12, "figure": 12, "multi_book": 12,
+              "unanswerable": 10}
+SPLITS = ("dev", "holdout", "holdout2")  # holdout was used once (2026-11-17); holdout2 is the fresh final check
 KS = (3, 5, 10)
 DEPTH = 100
 MAX_GOLD_PAGES, MAX_ANCHORS, MAX_ANCHOR_WORDS = 3, 3, 6
@@ -295,7 +298,7 @@ def evaluate(index: Index, questions: list[Question], passages: list[Passage], q
     matcher = Matcher(passages, match)
     outcomes = run_questions(index, chosen, matcher, ranking=ranking)
     return {
-        "split": split, "match": match, "ranking": asdict(ranking or index.ranking),
+        "split": split, "match": match, "ranking": asdict(ranking or index.ranking), "retrieval": describe(index),
         "fingerprint": {"corpus": corpus_fingerprint(root), "questions_sha256": file_sha256(questions_path)},
         "metrics": group_metrics(outcomes), "exposure": exposure_report(outcomes),
         "unanswerable": unanswerable_report(outcomes), "misses": misses(outcomes, matcher),
@@ -335,22 +338,27 @@ def format_metrics(title: str, rows: dict) -> list[str]:
 
 def format_report(result: dict, show_misses: bool = True) -> str:
     metrics = result["metrics"]
-    lines = [f"split={result['split']} match={result['match']} ranking={json.dumps(result['ranking'])}",
+    retrieval = result.get("retrieval", {"mode": "bm25"})
+    lines = [f"split={result['split']} match={result['match']} retrieval={json.dumps(retrieval)} "
+             f"ranking={json.dumps(result['ranking'])}",
              *format_metrics("Overall (answerable questions)", {"overall": metrics["overall"]}),
              *format_metrics("By category", metrics["category"]), *format_metrics("By source", metrics["source"]),
              "Exposure in the top 10 (mean share): " + ", ".join(f"{k} {v:.1%}" for k, v in result["exposure"].items())]
     u = result["unanswerable"]
-    lines.append(f"Top-1 score: answerable median {u['answerable_top1_median']:.2f}, unanswerable median "
-                 f"{u['unanswerable_top1_median']:.2f}; {u['unanswerable_above_answerable_p10']:.0%} of "
+    above = u["unanswerable_above_answerable_p10"]
+    verdict = ("so on this sample the top score separates 'no answer' from 'answer' (too few questions to rely on)"
+               if above == 0 else "so the score alone cannot separate 'no answer' from 'answer'")
+    lines.append(f"Top-1 score: answerable median {u['answerable_top1_median']:.4g}, unanswerable median "
+                 f"{u['unanswerable_top1_median']:.4g}; {above:.0%} of "
                  f"{u['n_unanswerable']} unanswerable questions score above the answerable 10th percentile "
-                 f"({u['answerable_top1_p10']:.2f}), so the score alone cannot separate 'no answer' from 'answer'")
+                 f"({u['answerable_top1_p10']:.4g}), {verdict}")
     if show_misses:
         lines.append(f"Misses at 10: {len(result['misses'])}")
         for m in result["misses"]:
             rank = m["rank"] if m["rank"] else f">{DEPTH}"
             lines.append(f"  {m['id']} [{m['category']}] hint={m['cause_hint']} rank={rank}: {m['question']}")
             for t in m["top3"]:
-                lines.append(f"      {t['source']} p.{t['pages'][0]}-{t['pages'][1]} {t['type']} {t['score']}")
+                lines.append(f"      {t['source']} p.{t['pages'][0]}-{t['pages'][1]} {t['type']} {t['score']:.4g}")
     return "\n".join(lines)
 
 
@@ -542,6 +550,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--sweep", action="append", metavar="KEY=V1,V2,...",
                         help="run one ranking key at several values and print one row per value")
     parser.add_argument("--against", type=Path, help="saved run used as the reference for --sweep (default: neutral)")
+    parser.add_argument("--mode", choices=MODES, default=DEFAULT_MODE,
+                        help=f"retrieval to evaluate: bm25, dense or hybrid (default: {DEFAULT_MODE})")
+    parser.add_argument("--model", choices=sorted(MODELS), default=DEFAULT_MODEL,
+                        help="embedding model for dense/hybrid (see models/README.md)")
+    parser.add_argument("--lexical-weight", type=float, default=LEXICAL_WEIGHT,
+                        help=f"hybrid only: BM25's weight in the rank fusion, dense counts 1.0 (default: {LEXICAL_WEIGHT})")
     args = parser.parse_args(argv)
 
     if args.compare:
@@ -551,9 +565,9 @@ def main(argv: list[str] | None = None) -> int:
         except (ValueError, OSError) as error:
             parser.error(str(error))
         return 0
-    if args.split == "holdout" and not args.final:
-        parser.error("the holdout split is for the final report only; pass --final to use it")
-    if args.split == "holdout":
+    if args.split.startswith("holdout") and not args.final:
+        parser.error("the holdout splits are for the final report only; pass --final to use one")
+    if args.split.startswith("holdout"):
         print("note: holdout is for the final report only; do not tune on it")
 
     passages = load_corpus(base=ROOT)
@@ -585,7 +599,10 @@ def main(argv: list[str] | None = None) -> int:
         ranking = parse_ranking(args.ranking)
     except ValueError as error:
         parser.error(str(error))
-    index = Index(passages)
+    try:
+        index = build_index(passages, args.mode, model=args.model, lexical_weight=args.lexical_weight)
+    except (ModelMissing, VectorsMissing) as error:
+        parser.error(f"{error} (or pass --mode bm25)")
     if args.sweep:
         if args.save:
             parser.error("--save cannot be combined with --sweep")

@@ -14,6 +14,15 @@ from rag_mvp.ingest import main as ingest_main
 
 
 class SearchCli(unittest.TestCase):
+    def setUp(self):
+        # These tests cover word-matching output; keep them independent of whether the embedding model is installed.
+        empty = tempfile.TemporaryDirectory()
+        self.addCleanup(empty.cleanup)
+        previous = os.environ.get("RAG_MODEL_DIR")
+        os.environ["RAG_MODEL_DIR"] = empty.name
+        self.addCleanup(lambda: os.environ.pop("RAG_MODEL_DIR") if previous is None
+                        else os.environ.__setitem__("RAG_MODEL_DIR", previous))
+
     def run_cli(self, *argv):
         out, err = StringIO(), StringIO()
         with redirect_stdout(out), redirect_stderr(err):
@@ -69,6 +78,7 @@ class PipedOutput(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             (Path(directory) / "notes.txt").write_text("Urea \u2192 retained in caf\u00e9 sharks.", encoding="utf-8")
             env = {k: v for k, v in os.environ.items() if k not in ("PYTHONIOENCODING", "PYTHONUTF8")}
+            env["RAG_MODEL_DIR"] = directory  # no model there: plain word matching, no 500 MB load
             done = subprocess.run([sys.executable, "-m", "rag_mvp.cli", "urea sharks", "--data-dir", directory],
                                   capture_output=True, env=env)
         self.assertEqual(done.returncode, 0, done.stderr)

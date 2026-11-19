@@ -1,0 +1,755 @@
+{
+ "split": "holdout2",
+ "match": "anchor",
+ "ranking": {
+  "low_quality_weight": 1.0,
+  "table_degraded_weight": 1.0,
+  "credit_only_weight": 1.0,
+  "type_weights": {}
+ },
+ "retrieval": {
+  "mode": "dense",
+  "model": "gte-base-en-v1.5:555854571:cls:1024"
+ },
+ "fingerprint": {
+  "corpus": [
+   {
+    "source": "A-Student039s-Guide-to-Tropical-Marine-Biology-1576764955.pdf",
+    "sha256": "ed76d341fea9a46db914b668ad0abb5372c27eedf86a75eab25b2c60cd07401b",
+    "extractor_version": "4",
+    "manifest_schema": 2,
+    "chunks": 432
+   },
+   {
+    "source": "Biology and Ecology of Fishes (3rd Ed.) by James S. Diana & Tomas O. Höök.pdf",
+    "sha256": "fe8c3797a942b3f9156164275344e0f9453259ff46a2c65786d3e3346348ee54",
+    "extractor_version": "4",
+    "manifest_schema": 2,
+    "chunks": 1604
+   },
+   {
+    "source": "Introduction to Marine Biology (4th Ed.) by George Karleskint, Richard Turner, James W. Small.pdf",
+    "sha256": "1acc69e3cc4180744033e93b3d868dc1b30461935ea239d17f7aa78d4b1e028e",
+    "extractor_version": "4",
+    "manifest_schema": 2,
+    "chunks": 2265
+   },
+   {
+    "source": "Marine Biology 12e By Peter Castro, Michael Huber.pdf",
+    "sha256": "f24cde082efb105bcdb953ef7a9e4a7a7b8ceea7f3350ddc7ed6729bae232b79",
+    "extractor_version": "4",
+    "manifest_schema": 2,
+    "chunks": 2225
+   }
+  ],
+  "questions_sha256": "2258f294c51f00088c2dba5e1269681891a23c2f0b2743ec2aa856945d767df9"
+ },
+ "metrics": {
+  "overall": {
+   "n": 32,
+   "descriptive_only": false,
+   "recall@3": {
+    "value": 0.8125,
+    "ci": [
+     0.65625,
+     0.9375
+    ]
+   },
+   "recall@5": {
+    "value": 0.8125,
+    "ci": [
+     0.65625,
+     0.9375
+    ]
+   },
+   "recall@10": {
+    "value": 0.90625,
+    "ci": [
+     0.8125,
+     1.0
+    ]
+   },
+   "mrr@10": {
+    "value": 0.7068452380952381,
+    "ci": [
+     0.5751488095238095,
+     0.8385416666666666
+    ]
+   }
+  },
+  "category": {
+   "figure": {
+    "n": 2,
+    "descriptive_only": true,
+    "recall@3": {
+     "value": 1.0,
+     "ci": [
+      1.0,
+      1.0
+     ]
+    },
+    "recall@5": {
+     "value": 1.0,
+     "ci": [
+      1.0,
+      1.0
+     ]
+    },
+    "recall@10": {
+     "value": 1.0,
+     "ci": [
+      1.0,
+      1.0
+     ]
+    },
+    "mrr@10": {
+     "value": 0.75,
+     "ci": [
+      0.5,
+      1.0
+     ]
+    }
+   },
+   "lexical": {
+    "n": 4,
+    "descriptive_only": true,
+    "recall@3": {
+     "value": 0.75,
+     "ci": [
+      0.25,
+      1.0
+     ]
+    },
+    "recall@5": {
+     "value": 0.75,
+     "ci": [
+      0.25,
+      1.0
+     ]
+    },
+    "recall@10": {
+     "value": 1.0,
+     "ci": [
+      1.0,
+      1.0
+     ]
+    },
+    "mrr@10": {
+     "value": 0.6607142857142857,
+     "ci": [
+      0.3214285714285714,
+      1.0
+     ]
+    }
+   },
+   "paraphrase": {
+    "n": 12,
+    "descriptive_only": true,
+    "recall@3": {
+     "value": 0.75,
+     "ci": [
+      0.5,
+      1.0
+     ]
+    },
+    "recall@5": {
+     "value": 0.75,
+     "ci": [
+      0.5,
+      1.0
+     ]
+    },
+    "recall@10": {
+     "value": 0.8333333333333334,
+     "ci": [
+      0.5833333333333334,
+      1.0
+     ]
+    },
+    "mrr@10": {
+     "value": 0.7202380952380952,
+     "ci": [
+      0.4702380952380953,
+      0.9285714285714285
+     ]
+    }
+   },
+   "student": {
+    "n": 12,
+    "descriptive_only": true,
+    "recall@3": {
+     "value": 0.9166666666666666,
+     "ci": [
+      0.75,
+      1.0
+     ]
+    },
+    "recall@5": {
+     "value": 0.9166666666666666,
+     "ci": [
+      0.75,
+      1.0
+     ]
+    },
+    "recall@10": {
+     "value": 0.9166666666666666,
+     "ci": [
+      0.75,
+      1.0
+     ]
+    },
+    "mrr@10": {
+     "value": 0.7638888888888888,
+     "ci": [
+      0.5555555555555556,
+      0.9444444444444445
+     ]
+    }
+   },
+   "table": {
+    "n": 2,
+    "descriptive_only": true,
+    "recall@3": {
+     "value": 0.5,
+     "ci": [
+      0.0,
+      1.0
+     ]
+    },
+    "recall@5": {
+     "value": 0.5,
+     "ci": [
+      0.0,
+      1.0
+     ]
+    },
+    "recall@10": {
+     "value": 1.0,
+     "ci": [
+      1.0,
+      1.0
+     ]
+    },
+    "mrr@10": {
+     "value": 0.3333333333333333,
+     "ci": [
+      0.16666666666666666,
+      0.5
+     ]
+    }
+   }
+  },
+  "split": {
+   "holdout2": {
+    "n": 32,
+    "descriptive_only": false,
+    "recall@3": {
+     "value": 0.8125,
+     "ci": [
+      0.65625,
+      0.9375
+     ]
+    },
+    "recall@5": {
+     "value": 0.8125,
+     "ci": [
+      0.65625,
+      0.9375
+     ]
+    },
+    "recall@10": {
+     "value": 0.90625,
+     "ci": [
+      0.8125,
+      1.0
+     ]
+    },
+    "mrr@10": {
+     "value": 0.7068452380952381,
+     "ci": [
+      0.5751488095238095,
+      0.8385416666666666
+     ]
+    }
+   }
+  },
+  "source": {
+   "A-Student039s-Guide-to-Tropical-Marine-Biology-1576764955.pdf": {
+    "n": 8,
+    "descriptive_only": true,
+    "recall@3": {
+     "value": 0.875,
+     "ci": [
+      0.625,
+      1.0
+     ]
+    },
+    "recall@5": {
+     "value": 0.875,
+     "ci": [
+      0.625,
+      1.0
+     ]
+    },
+    "recall@10": {
+     "value": 0.875,
+     "ci": [
+      0.625,
+      1.0
+     ]
+    },
+    "mrr@10": {
+     "value": 0.75,
+     "ci": [
+      0.5,
+      0.9375
+     ]
+    }
+   },
+   "Biology and Ecology of Fishes (3rd Ed.) by James S. Diana & Tomas O. Höök.pdf": {
+    "n": 8,
+    "descriptive_only": true,
+    "recall@3": {
+     "value": 0.75,
+     "ci": [
+      0.375,
+      1.0
+     ]
+    },
+    "recall@5": {
+     "value": 0.75,
+     "ci": [
+      0.375,
+      1.0
+     ]
+    },
+    "recall@10": {
+     "value": 1.0,
+     "ci": [
+      1.0,
+      1.0
+     ]
+    },
+    "mrr@10": {
+     "value": 0.7261904761904762,
+     "ci": [
+      0.4583333333333333,
+      0.9375
+     ]
+    }
+   },
+   "Introduction to Marine Biology (4th Ed.) by George Karleskint, Richard Turner, James W. Small.pdf": {
+    "n": 9,
+    "descriptive_only": true,
+    "recall@3": {
+     "value": 0.8888888888888888,
+     "ci": [
+      0.6666666666666666,
+      1.0
+     ]
+    },
+    "recall@5": {
+     "value": 0.8888888888888888,
+     "ci": [
+      0.6666666666666666,
+      1.0
+     ]
+    },
+    "recall@10": {
+     "value": 1.0,
+     "ci": [
+      1.0,
+      1.0
+     ]
+    },
+    "mrr@10": {
+     "value": 0.7566137566137566,
+     "ci": [
+      0.5132275132275131,
+      0.925925925925926
+     ]
+    }
+   },
+   "Marine Biology 12e By Peter Castro, Michael Huber.pdf": {
+    "n": 9,
+    "descriptive_only": true,
+    "recall@3": {
+     "value": 0.7777777777777778,
+     "ci": [
+      0.4444444444444444,
+      1.0
+     ]
+    },
+    "recall@5": {
+     "value": 0.7777777777777778,
+     "ci": [
+      0.4444444444444444,
+      1.0
+     ]
+    },
+    "recall@10": {
+     "value": 0.7777777777777778,
+     "ci": [
+      0.4444444444444444,
+      1.0
+     ]
+    },
+    "mrr@10": {
+     "value": 0.5925925925925926,
+     "ci": [
+      0.3148148148148148,
+      0.8703703703703703
+     ]
+    }
+   }
+  }
+ },
+ "exposure": {
+  "figure": 0.14594594594594595,
+  "table": 0.01891891891891892,
+  "low_quality": 0.008108108108108109,
+  "table_degraded": 0.008108108108108109,
+  "credit_only": 0.005405405405405406
+ },
+ "unanswerable": {
+  "answerable_top1_median": 0.6578505635261536,
+  "unanswerable_top1_median": 0.4473417401313782,
+  "answerable_top1_p10": 0.5321517944335937,
+  "unanswerable_above_answerable_p10": 0.2,
+  "n_unanswerable": 5
+ },
+ "misses": [
+  {
+   "id": "q135",
+   "category": "paraphrase",
+   "question": "How can dolphins judge the distance to a snack in murky water just by clicking and listening?",
+   "rank": null,
+   "cause_hint": "vocabulary",
+   "top3": [
+    {
+     "source": "Introduction to Marine Biol...",
+     "pages": [
+      351,
+      351
+     ],
+     "type": "text",
+     "score": 0.688
+    },
+    {
+     "source": "Introduction to Marine Biol...",
+     "pages": [
+      350,
+      350
+     ],
+     "type": "text",
+     "score": 0.651
+    },
+    {
+     "source": "Introduction to Marine Biol...",
+     "pages": [
+      350,
+      351
+     ],
+     "type": "text",
+     "score": 0.643
+    }
+   ]
+  },
+  {
+   "id": "q141",
+   "category": "student",
+   "question": "what are coralline algae?",
+   "rank": 13,
+   "cause_hint": "ranking",
+   "top3": [
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      121,
+      122
+     ],
+     "type": "text",
+     "score": 0.661
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      336,
+      336
+     ],
+     "type": "text",
+     "score": 0.611
+    },
+    {
+     "source": "Introduction to Marine Biol...",
+     "pages": [
+      179,
+      179
+     ],
+     "type": "text",
+     "score": 0.602
+    }
+   ]
+  },
+  {
+   "id": "q148",
+   "category": "paraphrase",
+   "question": "Which eel-looking animal with no jaws defends itself by oozing loads of goo when attacked?",
+   "rank": null,
+   "cause_hint": "vocabulary",
+   "top3": [
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      399,
+      399
+     ],
+     "type": "text",
+     "score": 0.586
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      169,
+      169
+     ],
+     "type": "figure",
+     "score": 0.548
+    },
+    {
+     "source": "Marine Biology 12e By Peter...",
+     "pages": [
+      163,
+      163
+     ],
+     "type": "table",
+     "score": 0.523
+    }
+   ]
+  }
+ ],
+ "questions": [
+  {
+   "id": "q103",
+   "category": "paraphrase",
+   "rank": 7,
+   "top1": 0.5388
+  },
+  {
+   "id": "q104",
+   "category": "paraphrase",
+   "rank": 1,
+   "top1": 0.5311
+  },
+  {
+   "id": "q105",
+   "category": "paraphrase",
+   "rank": 1,
+   "top1": 0.593
+  },
+  {
+   "id": "q109",
+   "category": "student",
+   "rank": 1,
+   "top1": 0.7863
+  },
+  {
+   "id": "q110",
+   "category": "student",
+   "rank": 2,
+   "top1": 0.7371
+  },
+  {
+   "id": "q111",
+   "category": "student",
+   "rank": 1,
+   "top1": 0.8007
+  },
+  {
+   "id": "q112",
+   "category": "lexical",
+   "rank": 1,
+   "top1": 0.7572
+  },
+  {
+   "id": "q113",
+   "category": "table",
+   "rank": 6,
+   "top1": 0.6281
+  },
+  {
+   "id": "q118",
+   "category": "paraphrase",
+   "rank": 1,
+   "top1": 0.5381
+  },
+  {
+   "id": "q119",
+   "category": "paraphrase",
+   "rank": 1,
+   "top1": 0.574
+  },
+  {
+   "id": "q120",
+   "category": "paraphrase",
+   "rank": 1,
+   "top1": 0.5775
+  },
+  {
+   "id": "q124",
+   "category": "student",
+   "rank": 1,
+   "top1": 0.6188
+  },
+  {
+   "id": "q125",
+   "category": "student",
+   "rank": 3,
+   "top1": 0.751
+  },
+  {
+   "id": "q126",
+   "category": "student",
+   "rank": 3,
+   "top1": 0.781
+  },
+  {
+   "id": "q127",
+   "category": "lexical",
+   "rank": 7,
+   "top1": 0.6548
+  },
+  {
+   "id": "q128",
+   "category": "figure",
+   "rank": 1,
+   "top1": 0.8324
+  },
+  {
+   "id": "q133",
+   "category": "paraphrase",
+   "rank": 1,
+   "top1": 0.528
+  },
+  {
+   "id": "q134",
+   "category": "paraphrase",
+   "rank": 1,
+   "top1": 0.6053
+  },
+  {
+   "id": "q135",
+   "category": "paraphrase",
+   "rank": null,
+   "top1": 0.6883
+  },
+  {
+   "id": "q139",
+   "category": "student",
+   "rank": 1,
+   "top1": 0.617
+  },
+  {
+   "id": "q140",
+   "category": "student",
+   "rank": 1,
+   "top1": 0.7009
+  },
+  {
+   "id": "q141",
+   "category": "student",
+   "rank": 13,
+   "top1": 0.6609
+  },
+  {
+   "id": "q142",
+   "category": "lexical",
+   "rank": 2,
+   "top1": 0.678
+  },
+  {
+   "id": "q143",
+   "category": "table",
+   "rank": 2,
+   "top1": 0.719
+  },
+  {
+   "id": "q148",
+   "category": "paraphrase",
+   "rank": null,
+   "top1": 0.5859
+  },
+  {
+   "id": "q149",
+   "category": "paraphrase",
+   "rank": 2,
+   "top1": 0.4967
+  },
+  {
+   "id": "q150",
+   "category": "paraphrase",
+   "rank": 1,
+   "top1": 0.5315
+  },
+  {
+   "id": "q154",
+   "category": "student",
+   "rank": 1,
+   "top1": 0.638
+  },
+  {
+   "id": "q155",
+   "category": "student",
+   "rank": 1,
+   "top1": 0.7456
+  },
+  {
+   "id": "q156",
+   "category": "student",
+   "rank": 1,
+   "top1": 0.8794
+  },
+  {
+   "id": "q157",
+   "category": "lexical",
+   "rank": 1,
+   "top1": 0.7198
+  },
+  {
+   "id": "q158",
+   "category": "figure",
+   "rank": 2,
+   "top1": 0.6956
+  },
+  {
+   "id": "q164",
+   "category": "unanswerable",
+   "rank": null,
+   "top1": 0.5435
+  },
+  {
+   "id": "q165",
+   "category": "unanswerable",
+   "rank": null,
+   "top1": 0.4473
+  },
+  {
+   "id": "q166",
+   "category": "unanswerable",
+   "rank": null,
+   "top1": 0.396
+  },
+  {
+   "id": "q167",
+   "category": "unanswerable",
+   "rank": null,
+   "top1": 0.5186
+  },
+  {
+   "id": "q168",
+   "category": "unanswerable",
+   "rank": null,
+   "top1": 0.2984
+  }
+ ]
+}
